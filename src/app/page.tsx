@@ -1,8 +1,8 @@
 import { BlogSummaryCard } from "@/components/blog-summary";
 import { getBlogPostList } from "@/utils/posts";
-import styles from "./homepage.module.css";
+import styles from "./page.module.css";
 
-export default async function HomePage() {
+export default async function Page() {
   const blogPostList = await getBlogPostList();
 
   return (

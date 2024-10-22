@@ -1,6 +1,7 @@
 import matter from "gray-matter";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { cache } from "react";
 
 export interface BlogPostMeta {
   title: string;
@@ -33,17 +34,19 @@ export async function getBlogPostList(): Promise<BlogPost[]> {
   );
 }
 
-export async function getBlogPost(
-  slug: string,
-): Promise<{ frontmatter: BlogPostMeta; content: string }> {
-  const rawContent = await readFile(`/content/${slug}.mdx`);
+export const getBlogPost = cache(
+  async (
+    slug: string,
+  ): Promise<{ frontmatter: BlogPostMeta; content: string }> => {
+    const rawContent = await readFile(`/content/${slug}.mdx`);
 
-  const { data, content } = matter(rawContent);
+    const { data, content } = matter(rawContent);
 
-  const frontmatter = data as BlogPostMeta;
+    const frontmatter = data as BlogPostMeta;
 
-  return { frontmatter, content };
-}
+    return { frontmatter, content };
+  },
+);
 
 function readFile(localPath: string) {
   return fs.readFile(path.join(process.cwd(), localPath), "utf8");
