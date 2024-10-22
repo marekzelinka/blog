@@ -1,7 +1,7 @@
 import { BlogHero } from "@/components/blog-hero";
 import styles from "./slug.module.css";
 
-export default function BlogPost() {
+export default function BlogPostPage() {
   return (
     <article className={styles.wrapper}>
       <BlogHero title="Example post!" publishedOn={new Date().toISOString()} />

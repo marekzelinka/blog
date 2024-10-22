@@ -1,17 +1,16 @@
 import { BlogSummaryCard } from "@/components/blog-summary";
+import { getBlogPostList } from "@/utils/posts";
 import styles from "./homepage.module.css";
 
-export default function Home() {
+export default async function HomePage() {
+  const blogPostList = await getBlogPostList();
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.mainHeading}>Latest Content:</h1>
-      {/* TODO: Iterate over the data read from the file system! */}
-      <BlogSummaryCard
-        slug="example"
-        title="Hello world!"
-        abstract="This is a placeholder, an example which shows how the “BlogSummaryCard” component should be used. You'll want to swap this out based on the data from the various MDX files!"
-        publishedOn={new Date().toISOString()}
-      />
+      {blogPostList.map((blogPost) => (
+        <BlogSummaryCard key={blogPost.slug} {...blogPost} />
+      ))}
     </div>
   );
 }
