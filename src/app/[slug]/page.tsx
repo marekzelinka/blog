@@ -3,6 +3,7 @@ import { CodeSnippet } from "@/components/code-snippet";
 import { getBlogPost } from "@/utils/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import styles from "./page.module.css";
+import { notFound } from "next/navigation";
 
 type Params = Promise<{ slug: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -14,6 +15,9 @@ export async function generateMetadata(props: {
   const { slug } = await props.params;
 
   const blogPost = await getBlogPost(slug);
+  if (!blogPost) {
+    return null
+  }
 
   return {
     title: blogPost.frontmatter.title,
@@ -28,6 +32,9 @@ export default async function Page(props: {
   const { slug } = await props.params;
 
   const blogPost = await getBlogPost(slug);
+  if (!blogPost) {
+    notFound()
+  }
 
   return (
     <article className={styles.wrapper}>

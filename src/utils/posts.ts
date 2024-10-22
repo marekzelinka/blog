@@ -37,8 +37,14 @@ export async function getBlogPostList(): Promise<BlogPost[]> {
 export const getBlogPost = cache(
   async (
     slug: string,
-  ): Promise<{ frontmatter: BlogPostMeta; content: string }> => {
-    const rawContent = await readFile(`/content/${slug}.mdx`);
+  ): Promise<{ frontmatter: BlogPostMeta; content: string } | null> => {
+    let rawContent: string;
+
+    try {
+      rawContent = await readFile(`/content/${slug}.mdx`);
+    } catch {
+      return null;
+    }
 
     const { data, content } = matter(rawContent);
 
