@@ -5,7 +5,7 @@ import { Logo } from "./logo";
 import { VisuallyHidden } from "./visually-hidden";
 
 export function Header({
-  theme,
+  // theme,
   className,
 }: {
   theme: string;
