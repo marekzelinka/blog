@@ -9,9 +9,8 @@ export interface BlogPostMeta {
 }
 
 export interface BlogPost extends BlogPostMeta {
-  slug: string
+  slug: string;
 }
-
 
 export async function getBlogPostList(): Promise<BlogPost[]> {
   const fileNames = await readDirectory("/content");
@@ -34,10 +33,14 @@ export async function getBlogPostList(): Promise<BlogPost[]> {
   );
 }
 
-export async function loadBlogPost(slug: string) {
+export async function getBlogPost(
+  slug: string,
+): Promise<{ frontmatter: BlogPostMeta; content: string }> {
   const rawContent = await readFile(`/content/${slug}.mdx`);
 
-  const { data: frontmatter, content } = matter(rawContent);
+  const { data, content } = matter(rawContent);
+
+  const frontmatter = data as BlogPostMeta;
 
   return { frontmatter, content };
 }
